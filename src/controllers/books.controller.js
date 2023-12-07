@@ -11,7 +11,7 @@ module.exports = {
         if (book) {
             res.json(book);
         } else {
-            res.status(404).json({ message: 'Book Not Found in Ruhuna' });
+            res.status(404).json({ message: 'Book Not Found in DevFest Books Store' });
         }
     },
 
@@ -29,7 +29,7 @@ module.exports = {
         if (updated) {
             res.json(updatedBook);
         } else {
-            res.status(404).json( { message: 'Book Not found in RUHUNA :(' });
+            res.status(404).json( { message: 'Book Not found in DevFest Books Store :(' });
         }
     },
 
@@ -40,7 +40,7 @@ module.exports = {
         if (deletedBook) {
             res.json(deletedBook);
         } else {
-            res.status(404).json({ message: 'Book not found in RUHUNA :(' });
+            res.status(404).json({ message: 'Book not found in DevFest Books Store :(' });
         }
     },
 };
