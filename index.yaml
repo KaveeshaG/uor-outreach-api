@@ -1,0 +1,197 @@
+openapi: "3.0.0"
+info:
+    version: "1.0.0"
+    title: "Books Store API"
+    description: Books Store API
+    contact:
+        name: KaveeshaG
+        email: uakaveeshagimhana@gmail.com
+        url: https://kaveeshagimhana.com
+    license:
+        name: MIT
+        url: https://opensource.org/licenses/MIT
+servers:
+    - url: "https://uor-outreach-api-ody6p6lxga-uc.a.run.app/api/v1"
+      description: Books backend for Developing APIs DevFest23'
+tags:
+    - name: books
+      description: Books in Store
+paths:
+    /books:
+        post:
+            summary: Create a new book
+            operationId: createBook
+            tags:
+                - books
+            requestBody:
+                description: New book fields (freeform)
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Book"
+            responses:
+                "200":
+                    description: Book created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Book"
+                default:
+                    description: unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+        get:
+            summary: Get all books
+            operationId: getAllBooks
+            tags:
+                - books
+            responses:
+                "200":
+                    description: Complete list of books
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Books"
+                default:
+                    description: unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /books/{id}:
+        parameters:
+            - name: id
+              description: The unique identifier of the book
+              in: path
+              required: true
+              schema:
+                  $ref: "#/components/schemas/id"
+        get:
+            summary: Read a book
+            description: Get book by id.
+            operationId: getBookById
+            tags:
+                - books
+            responses:
+                "200":
+                    description: The book corresponding to the provided `id`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/id"
+                404:
+                    description: No book found for the provided `id`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                500:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+        put:
+            summary: Update a specific book
+            description: Update book by id.
+            operationId: updateBookById
+            tags:
+                - books
+            requestBody:
+                description: Product fields to update
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Book"
+            responses:
+                "200":
+                    description: Returns the request product update fields
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Book"
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "404":
+                    description: Product not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                default:
+                    description: unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+        delete:
+            summary: Delete a book
+            description: Delete book by id.
+            operationId: deleteBookById
+            tags:
+                - books
+            responses:
+                "200":
+                    description: The book deleted corresponding to the provided `id`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/id"
+                404:
+                    description: No book found for the provided `id`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                500:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+components:
+    schemas:
+        id:
+            description: The unique identifier of a id
+            type: string
+        Books:
+            type: array
+            description: array of books
+            items:
+                $ref: "#/components/schemas/Book"
+        Book:
+            type: object
+            required:
+                - id
+                - title
+                - author
+            properties:
+                id:
+                    $ref: "#/components/schemas/id"
+                title:
+                    type: string
+                author:
+                    type: string
+        Error:
+            type: object
+            required:
+                - message
+            properties:
+                message:
+                    description: A human readable error message
+                    type: string
+    securitySchemes:
+        ApiKey:
+            type: apiKey
+            in: header
+            name: X-Api-Key
+security:
+    - basicAuth: []
